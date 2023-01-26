@@ -25,10 +25,21 @@ public class Food : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag=="Player")
-        RandomizePosition();
-        SnakeController snakeController = collision.GetComponent<SnakeController>();
-        snakeController.Grow();
+        if (collision.tag == ("Player"))
+        {
+            RandomizePosition();
+            SnakeController snakeController = collision.GetComponent<SnakeController>();
+            snakeController.Grow();
+        }
+
+        if (collision.tag == ("Player2"))
+        {
+            RandomizePosition();
+            Snake2Controller snakeController2 = collision.GetComponent<Snake2Controller>();
+            snakeController2.Grow();
+        }
+
+        
     }
 
 

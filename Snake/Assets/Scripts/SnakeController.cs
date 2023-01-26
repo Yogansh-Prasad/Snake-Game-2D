@@ -11,19 +11,27 @@ public class SnakeController : MonoBehaviour
     private float gridMoveTimerMax;
     private List<Transform> segments;
     public Transform segmentPrefab;
+    public int initialSize =4;
+    public int speed=1;
+    public static int snakeLength;
 
     private void Start()
     {
         
         segments = new List<Transform>();
         segments.Add(this.transform);
+        for (int i = 1; i < initialSize; i++) 
+        {
+           segments.Add(Instantiate(segmentPrefab)); 
+        }
+
 
 
     }
 
-    private void ResetState()
+    private void GameOver()
     {
-        throw new NotImplementedException();
+        
     }
 
     private void Awake()
@@ -35,11 +43,37 @@ public class SnakeController : MonoBehaviour
         
     }
 
+    
+
     private void Update()
     {
-        GetInput();
-        GridMovement();       
+        
+        GetInput();       
+        GridMovement();
+        snakeLength = segments.Count;
+        
 
+    }
+
+    public Vector2Int ValidGridPosition(Vector2Int gridPosition)
+    {
+        if (gridPostion.x > 24) 
+        {
+            gridPostion.x = -23;
+        }
+        if (gridPostion.x < -24)
+        {
+            gridPostion.x = 23;
+        }
+        if (gridPostion.y > 11)
+        {
+            gridPostion.y = -11;
+        }
+        if (gridPostion.y < -11)
+        {
+            gridPostion.y = 11;
+        }
+        return gridPostion;
     }
 
     private void GetInput()
@@ -63,13 +97,16 @@ public class SnakeController : MonoBehaviour
         }
     }
 
+    
+
     private void GridMovement()
     {
         gridMoveTimer +=Time.deltaTime;
         if (gridMoveTimer >= gridMoveTimerMax) 
         { 
             gridMoveTimer -=gridMoveTimerMax ;
-            gridPostion += gridMoveDirection;
+            gridPostion += (gridMoveDirection)*speed;
+            gridPostion =ValidGridPosition(gridPostion);
 
 
             for (int i = segments.Count - 1; i > 0; i--) 
@@ -92,9 +129,25 @@ public class SnakeController : MonoBehaviour
         segments.Add(segment);
     }
 
-   
+    public void Shrink()
+    {
 
-    
+        GameObject lastsegment = segments[segments.Count - 1].gameObject;
+        Destroy(lastsegment);
+        segments.RemoveAt(segments.Count - 1);
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "SnakeBody")
+        { 
+            GameOver();
+        }
+    }
+
+
+
 
 
 }
