@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SnakeBody
   - Player2
+  - Snake2 Body
   layers:
   - Default
   - TransparentFX

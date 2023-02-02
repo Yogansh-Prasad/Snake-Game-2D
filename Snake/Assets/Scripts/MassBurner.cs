@@ -5,16 +5,35 @@ using UnityEngine;
 public class MassBurner : MonoBehaviour
 {
     public BoxCollider2D gridArea;
-
+    private float foodtimermax;
+    private float foodtimer;
 
     private void Start()
     {
         RandomizePosition();
     }
 
-   
+    private void Awake()
+    {
+        foodtimermax = 5.0f;
+        foodtimer = foodtimermax;
+    }
 
-   
+    private void Update()
+    {
+        foodtimer += Time.deltaTime;
+        if (foodtimer >= foodtimermax)
+        {
+
+            RandomizePosition();
+            foodtimer -= foodtimermax;
+
+        }
+    }
+
+
+
+
 
     private void RandomizePosition()
     {

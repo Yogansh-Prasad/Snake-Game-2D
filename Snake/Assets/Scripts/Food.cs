@@ -5,12 +5,33 @@ using UnityEngine;
 public class Food : MonoBehaviour
 {
     public BoxCollider2D gridArea;
+    public float foodtimer;
+    public float foodtimermax;
     
 
     private void Start()
     {
         RandomizePosition();
     }
+
+    private void Awake()
+    {
+        foodtimermax = 5.0f;
+        foodtimer = foodtimermax;
+    }
+
+    private void Update()
+    {
+        foodtimer += Time.deltaTime;
+        if (foodtimer >= foodtimermax)
+        {
+
+            RandomizePosition();
+            foodtimer -= foodtimermax;
+
+        }
+    }
+
 
     private void RandomizePosition() 
     {
@@ -38,6 +59,8 @@ public class Food : MonoBehaviour
             Snake2Controller snakeController2 = collision.GetComponent<Snake2Controller>();
             snakeController2.Grow();
         }
+
+        foodtimer = foodtimermax;
 
         
     }

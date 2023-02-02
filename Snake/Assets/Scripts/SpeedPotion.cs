@@ -5,11 +5,33 @@ using UnityEngine;
 public class SpeedPotion : MonoBehaviour
 {
     public BoxCollider2D gridArea;
+    private float poweruptimer;
+    private float poweruptimerMax;
+    public SnakeController snakeController;
+    public Snake2Controller snake2Controller;
 
 
     private void Start()
     {
         RandomizePosition();
+    }
+
+    private void Awake()
+    {
+        poweruptimerMax = 5.0f;
+        poweruptimer = poweruptimerMax;
+    }
+
+    private void Update()
+    {
+        poweruptimer += Time.deltaTime;
+        if (poweruptimer >= poweruptimerMax)
+        {
+
+            
+            poweruptimer -= poweruptimerMax;
+
+        }
     }
 
     private void RandomizePosition()
@@ -29,16 +51,24 @@ public class SpeedPotion : MonoBehaviour
         {
             RandomizePosition();
             SnakeController snakeController = collision.GetComponent<SnakeController>();
-            snakeController.speed=2;
+            snakeController.gridMoveTimerMax=0.05f;
         }
 
         if (collision.tag == ("Player2"))
         {
             RandomizePosition();
             Snake2Controller snakeController2 = collision.GetComponent<Snake2Controller>();
-            snakeController2.speed = 2;
+            snakeController2.gridMoveTimerMax = 0.05f;
         }
 
+        Invoke("ResetPotion", 5f);
 
+
+    }
+
+    private void ResetPotion()
+    {
+        snakeController.gridMoveTimerMax = 0.1f;
+        snake2Controller.gridMoveTimerMax = 0.1f;
     }
 }
